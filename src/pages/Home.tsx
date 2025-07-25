@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { RefreshCw, Plus } from 'lucide-react';
 import { useIssuesStore, useIssuesSelectors } from '@/store/useIssuesStore';
 import { SearchParams } from '@/types';
+import { useTranslation } from '@/hooks/useTranslation';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
 import FilterPanel from '@/components/FilterPanel';
@@ -12,6 +13,7 @@ import { PageLoading, IssueListSkeleton } from '@/components/LoadingSpinner';
 
 export default function Home() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   
   // Store actions
   const { 
@@ -92,9 +94,9 @@ export default function Home() {
   const handleSearch = async (params: SearchParams) => {
     try {
       await searchIssues(params);
-      toast.success('搜索完成');
+      toast.success(t('search.searchComplete') || '搜索完成');
     } catch (error) {
-      toast.error('搜索失败，请重试');
+      toast.error(t('search.searchFailed') || '搜索失败，请重试');
     }
   };
   
@@ -102,9 +104,9 @@ export default function Home() {
   const handleRefresh = async () => {
     try {
       await refreshIssues();
-      toast.success('刷新完成');
+      toast.success(t('common.refreshComplete') || '刷新完成');
     } catch (error) {
-      toast.error('刷新失败，请重试');
+      toast.error(t('common.refreshFailed') || '刷新失败，请重试');
     }
   };
   
@@ -112,16 +114,16 @@ export default function Home() {
   const handleLoadMore = async () => {
     try {
       await loadMoreIssues();
-      toast.success('加载更多完成');
+      toast.success(t('common.loadMoreComplete') || '加载更多完成');
     } catch (error) {
-      toast.error('加载更多失败，请重试');
+      toast.error(t('common.loadMoreFailed') || '加载更多失败，请重试');
     }
   };
   
   // 切换自动刷新
   const toggleAutoRefresh = () => {
     setAutoRefresh(!autoRefresh);
-    toast.success(autoRefresh ? '已关闭自动刷新' : '已开启自动刷新');
+    toast.success(autoRefresh ? (t('common.autoRefreshOff') || '已关闭自动刷新') : (t('common.autoRefreshOn') || '已开启自动刷新'));
   };
   
   // 处理Issue点击
@@ -138,7 +140,7 @@ export default function Home() {
     return (
       <div className="min-h-screen bg-gray-50">
         <Navbar onSearch={handleSearch} />
-        <PageLoading text="正在加载推荐Issues..." />
+        <PageLoading text={t('common.loadingRecommended') || '正在加载推荐Issues...'} />
       </div>
     );
   }
@@ -171,12 +173,12 @@ export default function Home() {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900">
-                    {Object.keys(filters).length > 0 ? '筛选结果' : '推荐Issues'}
+                    {Object.keys(filters).length > 0 ? t('search.filterResults') || '筛选结果' : t('home.recommendedIssues') || '推荐Issues'}
                   </h2>
                   <p className="text-gray-600 mt-1">
                     {Object.keys(filters).length > 0 
-                      ? `找到 ${displayIssues.length} 个匹配的Issues`
-                      : '为您精选的优质开源贡献机会'
+                      ? `${t('search.foundResults') || '找到'} ${displayIssues.length} ${t('search.matchingIssues') || '个匹配的Issues'}`
+                      : t('home.qualityContributions') || '为您精选的优质开源贡献机会'
                     }
                   </p>
                 </div>
@@ -184,7 +186,7 @@ export default function Home() {
                 <div className="flex items-center gap-4">
                   {/* 自动刷新开关 */}
                   <div className="flex items-center gap-2">
-                    <label className="text-sm text-gray-600">自动刷新</label>
+                    <label className="text-sm text-gray-600">{t('common.autoRefresh') || '自动刷新'}</label>
                     <button
                       onClick={toggleAutoRefresh}
                       className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
@@ -206,12 +208,12 @@ export default function Home() {
                     className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-lg font-medium transition-colors duration-200"
                   >
                     <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-                    {isRefreshing ? '刷新中...' : '刷新'}
+                    {isRefreshing ? (t('common.refreshing') || '刷新中...') : (t('common.refresh') || '刷新')}
                   </button>
                   
                   {displayIssues.length > 0 && (
                     <div className="text-sm text-gray-500">
-                      共 {displayIssues.length} 个Issues
+                      {t('common.total') || '共'} {displayIssues.length} {t('common.issues') || '个Issues'}
                     </div>
                   )}
                 </div>
@@ -245,7 +247,7 @@ export default function Home() {
                       className="flex items-center gap-2 mx-auto px-6 py-3 bg-gray-100 hover:bg-gray-200 disabled:bg-gray-50 text-gray-700 disabled:text-gray-400 rounded-lg font-medium transition-colors duration-200"
                     >
                       <Plus className={`w-5 h-5 ${isLoadingMore ? 'animate-spin' : ''}`} />
-                      {isLoadingMore ? '加载中...' : '加载更多Issues'}
+                      {isLoadingMore ? (t('common.loading') || '加载中...') : (t('common.loadMore') || '加载更多Issues')}
                     </button>
                   </div>
                 )}
@@ -260,7 +262,7 @@ export default function Home() {
                 {/* 没有更多数据提示 */}
                 {Object.keys(filters).length === 0 && !hasMore && displayIssues.length > 0 && (
                   <div className="mt-12 text-center">
-                    <p className="text-gray-500">已加载全部Issues</p>
+                    <p className="text-gray-500">{t('common.allLoaded') || '已加载全部Issues'}</p>
                   </div>
                 )}
               </>
@@ -275,12 +277,12 @@ export default function Home() {
                   </svg>
                 </div>
                 <h3 className="text-lg font-medium text-gray-900 mb-2">
-                  {Object.keys(filters).length > 0 ? '没有找到匹配的Issues' : '暂无推荐Issues'}
+                  {Object.keys(filters).length > 0 ? (t('search.noMatches') || '没有找到匹配的Issues') : (t('home.noRecommended') || '暂无推荐Issues')}
                 </h3>
                 <p className="text-gray-600 mb-6">
                   {Object.keys(filters).length > 0 
-                    ? '尝试调整筛选条件或搜索其他关键词'
-                    : '请稍后再试，或者尝试搜索特定的Issues'
+                    ? (t('search.tryAdjustFilters') || '尝试调整筛选条件或搜索其他关键词')
+                    : (t('home.tryLaterOrSearch') || '请稍后再试，或者尝试搜索特定的Issues')
                   }
                 </p>
                 {Object.keys(filters).length > 0 && (
@@ -288,7 +290,7 @@ export default function Home() {
                     onClick={clearFilters}
                     className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200"
                   >
-                    清除筛选条件
+                    {t('search.clearFilters') || '清除筛选条件'}
                   </button>
                 )}
               </div>

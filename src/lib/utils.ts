@@ -1,25 +1,29 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { formatDistanceToNow, format } from 'date-fns';
-import { zhCN } from 'date-fns/locale';
+import { zhCN, enUS } from 'date-fns/locale';
+import { translations } from '../locales';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
 // 格式化相对时间
-export function formatRelativeTime(date: string | Date): string {
+export function formatRelativeTime(date: string | Date, language: 'zh' | 'en' = 'zh'): string {
   const dateObj = typeof date === 'string' ? new Date(date) : date;
+  const locale = language === 'zh' ? zhCN : enUS;
   return formatDistanceToNow(dateObj, { 
     addSuffix: true,
-    locale: zhCN 
+    locale 
   });
 }
 
 // 格式化绝对时间
-export function formatAbsoluteTime(date: string | Date): string {
+export function formatAbsoluteTime(date: string | Date, language: 'zh' | 'en' = 'zh'): string {
   const dateObj = typeof date === 'string' ? new Date(date) : date;
-  return format(dateObj, 'yyyy年MM月dd日 HH:mm', { locale: zhCN });
+  const locale = language === 'zh' ? zhCN : enUS;
+  const formatString = language === 'zh' ? 'yyyy年MM月dd日 HH:mm' : 'MMM dd, yyyy HH:mm';
+  return format(dateObj, formatString, { locale });
 }
 
 // 格式化数字（如star数）
@@ -56,16 +60,21 @@ export function getDifficultyColor(difficulty: 'beginner' | 'intermediate' | 'ad
 }
 
 // 获取难度文本
-export function getDifficultyText(difficulty: 'beginner' | 'intermediate' | 'advanced'): string {
+export function getDifficultyText(difficulty: 'beginner' | 'intermediate' | 'advanced', language: 'zh' | 'en' = 'zh'): string {
+  const difficultyTranslations = translations[language]?.difficulty;
+  if (!difficultyTranslations) {
+    return difficulty;
+  }
+  
   switch (difficulty) {
     case 'beginner':
-      return '新手';
+      return difficultyTranslations.beginner;
     case 'intermediate':
-      return '中级';
+      return difficultyTranslations.intermediate;
     case 'advanced':
-      return '高级';
+      return difficultyTranslations.advanced;
     default:
-      return '未知';
+      return difficultyTranslations.unknown;
   }
 }
 

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Search, Sparkles, Github, TrendingUp } from 'lucide-react';
 import { SearchParams } from '@/types';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface HeroSectionProps {
   onSearch: (params: SearchParams) => void;
@@ -8,6 +9,7 @@ interface HeroSectionProps {
 
 export default function HeroSection({ onSearch }: HeroSectionProps) {
   const [searchQuery, setSearchQuery] = useState('');
+  const { t } = useTranslation();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,10 +23,10 @@ export default function HeroSection({ onSearch }: HeroSectionProps) {
   };
 
   const quickSearchItems = [
-    { label: 'Good First Issue', query: 'good first issue' },
-    { label: 'Help Wanted', query: 'help wanted' },
-    { label: 'Documentation', query: 'documentation' },
-    { label: 'Bug Fix', query: 'bug' }
+    { label: t('search.goodFirstIssue') || 'Good First Issue', query: 'good first issue' },
+    { label: t('search.helpWanted') || 'Help Wanted', query: 'help wanted' },
+    { label: t('search.documentation') || 'Documentation', query: 'documentation' },
+    { label: t('search.bugFix') || 'Bug Fix', query: 'bug' }
   ];
 
   return (
@@ -46,18 +48,17 @@ export default function HeroSection({ onSearch }: HeroSectionProps) {
                 <Sparkles className="w-7 h-7 text-white" />
               </div>
               <h1 className="text-4xl md:text-6xl font-bold text-gray-900">
-                AI Issues Finder
+                {t('home.title')}
               </h1>
             </div>
           </div>
           
           <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-            智能发现适合你的 <span className="text-blue-600 font-semibold">GitHub Issues</span>，
-            让开源贡献变得简单高效
+            {t('home.subtitle')}
           </p>
           
           <p className="text-lg text-gray-500 mb-12 max-w-2xl mx-auto">
-            通过AI技术评估难度等级，推荐最适合的开源项目贡献机会
+            {t('home.description')}
           </p>
 
           {/* Search Bar */}
@@ -70,7 +71,7 @@ export default function HeroSection({ onSearch }: HeroSectionProps) {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="搜索 GitHub Issues，例如：React bug fix"
+                placeholder={t('home.searchPlaceholder')}
                 className="block w-full pl-12 pr-4 py-4 text-lg border-2 border-gray-200 rounded-xl leading-5 bg-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 shadow-lg"
               />
               <button
@@ -78,7 +79,7 @@ export default function HeroSection({ onSearch }: HeroSectionProps) {
                 className="absolute inset-y-0 right-0 pr-4 flex items-center"
               >
                 <div className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200">
-                  搜索
+                  {t('home.searchButton')}
                 </div>
               </button>
             </form>
@@ -86,7 +87,7 @@ export default function HeroSection({ onSearch }: HeroSectionProps) {
 
           {/* Quick Search Tags */}
           <div className="mb-12">
-            <p className="text-sm text-gray-500 mb-4">热门搜索：</p>
+            <p className="text-sm text-gray-500 mb-4">{t('search.popularSearches') || '热门搜索：'}</p>
             <div className="flex flex-wrap justify-center gap-3">
               {quickSearchItems.map((item, index) => (
                 <button
@@ -106,9 +107,9 @@ export default function HeroSection({ onSearch }: HeroSectionProps) {
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
                 <TrendingUp className="w-6 h-6 text-blue-600" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">智能评估</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('home.features.intelligent.title')}</h3>
               <p className="text-gray-600 text-sm">
-                AI自动评估Issue难度等级，为不同水平的开发者推荐合适的贡献机会
+                {t('home.features.intelligent.description')}
               </p>
             </div>
             
@@ -116,9 +117,9 @@ export default function HeroSection({ onSearch }: HeroSectionProps) {
               <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
                 <Github className="w-6 h-6 text-green-600" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">实时数据</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('home.features.realtime.title') || '实时数据'}</h3>
               <p className="text-gray-600 text-sm">
-                实时爬取GitHub最新Issues，确保信息准确性和时效性
+                {t('home.features.realtime.description') || '实时爬取GitHub最新Issues，确保信息准确性和时效性'}
               </p>
             </div>
             
@@ -126,9 +127,9 @@ export default function HeroSection({ onSearch }: HeroSectionProps) {
               <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
                 <Sparkles className="w-6 h-6 text-purple-600" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">AI分析</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('home.features.analysis.title')}</h3>
               <p className="text-gray-600 text-sm">
-                深度分析Issue内容，提供技术方案建议和解决思路
+                {t('home.features.analysis.description')}
               </p>
             </div>
           </div>

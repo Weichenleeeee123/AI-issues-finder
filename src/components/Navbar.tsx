@@ -3,6 +3,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Search, Menu, X, Github, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { SearchParams } from '@/types';
+import { useTranslation } from '@/hooks/useTranslation';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 interface NavbarProps {
   onSearch?: (params: SearchParams) => void;
@@ -12,6 +14,7 @@ export default function Navbar({ onSearch }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const location = useLocation();
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
 
@@ -28,8 +31,8 @@ export default function Navbar({ onSearch }: NavbarProps) {
   };
 
   const navItems = [
-    { path: '/', label: '首页' },
-    { path: '/search', label: '搜索' },
+    { path: '/', label: t('nav.home') },
+    { path: '/search', label: t('nav.search') },
   ];
 
   return (
@@ -72,14 +75,15 @@ export default function Navbar({ onSearch }: NavbarProps) {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="搜索 GitHub Issues..."
+                placeholder={t('home.searchPlaceholder')}
                 className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm"
               />
             </form>
           </div>
 
-          {/* GitHub Link */}
+          {/* Language Switcher & GitHub Link */}
           <div className="hidden md:flex items-center space-x-4">
+            <LanguageSwitcher />
             <a
               href="https://github.com"
               target="_blank"
@@ -87,7 +91,7 @@ export default function Navbar({ onSearch }: NavbarProps) {
               className="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors"
             >
               <Star className="w-4 h-4" />
-              <span className="text-sm">Star on GitHub</span>
+              <span className="text-sm">{t('nav.starOnGitHub') || 'Star on GitHub'}</span>
             </a>
           </div>
 
@@ -137,7 +141,7 @@ export default function Navbar({ onSearch }: NavbarProps) {
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="搜索 GitHub Issues..."
+                  placeholder={t('home.searchPlaceholder')}
                   className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm"
                 />
               </form>

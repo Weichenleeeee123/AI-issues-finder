@@ -10,6 +10,7 @@ import {
   getLanguageColor 
 } from '@/lib/utils';
 import { cn } from '@/lib/utils';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface IssueCardProps {
   issue: EvaluatedIssue;
@@ -17,6 +18,8 @@ interface IssueCardProps {
 }
 
 export default function IssueCard({ issue, onClick }: IssueCardProps) {
+  const { language } = useTranslation();
+  
   const handleClick = () => {
     if (onClick) {
       onClick();
@@ -73,7 +76,7 @@ export default function IssueCard({ issue, onClick }: IssueCardProps) {
             'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
             getDifficultyColor(issue.difficulty)
           )}>
-            {getDifficultyText(issue.difficulty)}
+            {getDifficultyText(issue.difficulty, language)}
           </span>
           
           {/* Language Tag */}
@@ -147,7 +150,7 @@ export default function IssueCard({ issue, onClick }: IssueCardProps) {
           {/* Updated Time */}
           <div className="flex items-center space-x-1">
             <Clock className="w-4 h-4" />
-            <span>{formatRelativeTime(issue.updated_at)}</span>
+            <span>{formatRelativeTime(issue.updated_at, language)}</span>
           </div>
         </div>
 

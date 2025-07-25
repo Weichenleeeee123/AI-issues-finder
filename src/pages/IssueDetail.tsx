@@ -12,6 +12,7 @@ import Navbar from '@/components/Navbar';
 import AIAnalysisReport from '@/components/AIAnalysisReport';
 import { PageLoading } from '@/components/LoadingSpinner';
 import { formatRelativeTime, formatAbsoluteTime, getDifficultyColor, getLanguageColor } from '@/lib/utils';
+import { useTranslation } from '@/hooks/useTranslation';
 import 'highlight.js/styles/github.css';
 import '@/styles/markdown.css';
 
@@ -24,6 +25,7 @@ export default function IssueDetail() {
     issueNumber: string;
   }>();
   const navigate = useNavigate();
+  const { language } = useTranslation();
   
   const [issue, setIssue] = useState<EvaluatedIssue | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -164,7 +166,7 @@ export default function IssueDetail() {
                     </span>
                     <span className="flex items-center">
                       <Calendar className="w-4 h-4 mr-1" />
-                      {formatRelativeTime(issue.created_at)}
+                      {formatRelativeTime(issue.created_at, language)}
                     </span>
                   </div>
                 </div>
@@ -329,14 +331,14 @@ export default function IssueDetail() {
                 
                 <div className="flex items-center justify-between">
                   <span className="text-gray-600">创建时间</span>
-                  <span className="text-sm">{formatAbsoluteTime(issue.created_at)}</span>
+                  <span className="text-sm">{formatAbsoluteTime(issue.created_at, language)}</span>
                 </div>
                 
                 <div className="flex items-center justify-between">
                   <span className="text-gray-600">更新时间</span>
                   <span className="text-sm flex items-center">
                     <Clock className="w-4 h-4 mr-1" />
-                    {formatRelativeTime(issue.updated_at)}
+                    {formatRelativeTime(issue.updated_at, language)}
                   </span>
                 </div>
               </div>
