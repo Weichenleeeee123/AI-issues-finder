@@ -6,9 +6,9 @@
 
 ## 🌐 Live Demo
 
-[![Deploy with Vercel](https://vercel.com/button)](https://traenn4e001z-evy47wwf0-weichens-projects-083f7446.vercel.app)
+[![Deploy with Vercel](https://vercel.com/button)](https://traenn4e001z-kxz01m8y6-weichens-projects-083f7446.vercel.app)
 
-**🔗 Live Site**: [https://traenn4e001z-evy47wwf0-weichens-projects-083f7446.vercel.app](https://traenn4e001z-evy47wwf0-weichens-projects-083f7446.vercel.app)
+**🔗 Live Site**: [https://traenn4e001z-kxz01m8y6-weichens-projects-083f7446.vercel.app](https://traenn4e001z-kxz01m8y6-weichens-projects-083f7446.vercel.app)
 
 ---
 
