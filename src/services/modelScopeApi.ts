@@ -2,7 +2,7 @@ import axios from 'axios';
 import { ModelScopeRequest, ModelScopeResponse, AIAnalysis, GitHubIssue } from '@/types';
 
 const MODELSCOPE_API_BASE = 'https://api-inference.modelscope.cn/v1';
-const API_KEY = '053ce364-c132-45ba-9f25-496457b9f3ab';
+const API_KEY = import.meta.env.VITE_MODELSCOPE_API_KEY || '';
 
 class ModelScopeApiService {
   private apiClient: any;
