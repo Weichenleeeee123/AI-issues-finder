@@ -2,7 +2,7 @@ import axios from 'axios';
 import { ModelScopeRequest, ModelScopeResponse, AIAnalysis, GitHubIssue } from '@/types';
 
 const MODELSCOPE_API_BASE = 'https://api-inference.modelscope.cn/v1';
-const API_KEY = import.meta.env.VITE_MODELSCOPE_API_KEY || '';
+const API_KEY = '053ce364-c132-45ba-9f25-496457b9f3ab';
 
 class ModelScopeApiService {
   private apiClient: any;
@@ -171,7 +171,7 @@ class ModelScopeApiService {
       
       technicalAnalysis: `## 🔍 深度技术分析\n\n### 📊 项目背景\n\n| 属性 | 详情 |\n|------|------|\n| **项目类型** | ${issue.repository.description || '开源项目'} |\n| **主要技术** | \`${issue.repository.language || 'JavaScript/TypeScript'}\` |\n| **项目规模** | ${issue.repository.stargazers_count > 10000 ? '🔥 大型企业级' : issue.repository.stargazers_count > 1000 ? '⭐ 中型活跃' : '🌱 小型创新'}项目 |\n| **Star数量** | ${issue.repository.stargazers_count.toLocaleString()} ⭐ |\n| **社区活跃度** | ${issue.comments > 10 ? '🔥 高度活跃' : issue.comments > 3 ? '📈 中等活跃' : '🌱 待发展'} |\n\n### 🎯 问题复杂度分析\n\n**难度等级**: \`${difficulty}\`\n\n${this.getTechnicalComplexityAnalysis(issue, difficulty)}\n\n### 🛠️ 技术要求\n\n根据Issue的描述和标签分析，这个问题主要涉及：\n\n${this.getTechnicalRequirements(issue)}\n\n### ⚠️ 潜在挑战\n\n${this.getPotentialChallenges(issue, difficulty)}`,
       
-      solutions: specificSolutions.join('\n\n'),
+      solutions: specificSolutions,
       
       estimatedTime: `## ⏱️ 工作量评估\n\n**预计完成时间**: \`${timeEstimate}\`\n\n### 📅 详细时间分配\n\n${this.getDetailedTimeBreakdown(difficulty)}\n\n### 🎯 里程碑建议\n\n${this.getMilestoneRecommendations(difficulty)}`,
       
