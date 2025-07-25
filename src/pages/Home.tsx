@@ -93,8 +93,14 @@ export default function Home() {
   // 处理搜索
   const handleSearch = async (params: SearchParams) => {
     try {
-      await searchIssues(params);
-      toast.success(t('search.searchComplete') || '搜索完成');
+      // 跳转到搜索页面并传递搜索参数
+      const searchParams = new URLSearchParams();
+      if (params.query) searchParams.set('q', params.query);
+      if (params.language) searchParams.set('language', params.language);
+      if (params.difficulty) searchParams.set('difficulty', params.difficulty);
+      if (params.labels) searchParams.set('labels', params.labels);
+      
+      navigate(`/search?${searchParams.toString()}`);
     } catch (error) {
       toast.error(t('search.searchFailed') || '搜索失败，请重试');
     }

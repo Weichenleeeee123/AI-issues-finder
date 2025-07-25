@@ -22,9 +22,25 @@ class GitHubApiService {
     try {
       const queryParts = [];
       
-      // 构建搜索查询
+      // 构建搜索查询 - 扩展搜索范围
       if (params.query) {
-        queryParts.push(params.query);
+        // 搜索标题、内容、标签、repo名等多个字段
+        const searchTerms = [];
+        const query = params.query.trim();
+        
+        // 在标题中搜索
+        searchTerms.push(`${query} in:title`);
+        // 在内容中搜索
+        searchTerms.push(`${query} in:body`);
+        // 在标签中搜索
+        searchTerms.push(`label:${query}`);
+        // 在repo名中搜索
+        searchTerms.push(`repo:*${query}*`);
+        // 在主题/话题中搜索
+        searchTerms.push(`topic:${query}`);
+        
+        // 使用OR连接多个搜索条件
+        queryParts.push(`(${searchTerms.join(' OR ')})`);
       }
       
       if (params.repository) {
