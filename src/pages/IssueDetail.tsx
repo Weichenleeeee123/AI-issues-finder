@@ -25,7 +25,7 @@ export default function IssueDetail() {
     issueNumber: string;
   }>();
   const navigate = useNavigate();
-  const { language } = useTranslation();
+  const { t, language } = useTranslation();
   
   const [issue, setIssue] = useState<EvaluatedIssue | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -41,7 +41,7 @@ export default function IssueDetail() {
   useEffect(() => {
     const loadIssueDetail = async () => {
       if (!owner || !repo || !issueNumber) {
-        setError('无效的Issue参数');
+        setError(t('issue.invalidParams'));
         setIsLoading(false);
         return;
       }
@@ -78,8 +78,8 @@ export default function IssueDetail() {
         
       } catch (err) {
         console.error('Failed to load issue detail:', err);
-        setError('加载Issue详情失败，请重试');
-        toast.error('加载Issue详情失败');
+        setError(t('issue.loadDetailsFailed'));
+        toast.error(t('issue.loadDetailsFailed'));
       } finally {
         setIsLoading(false);
       }
@@ -94,9 +94,9 @@ export default function IssueDetail() {
     
     try {
       await generateAIAnalysis(issue);
-      toast.success('AI分析生成完成');
+      toast.success(t('issue.analysisComplete'));
     } catch (error) {
-      toast.error('AI分析生成失败，请重试');
+      toast.error(t('issue.analysisFailed'));
     }
   };
   
@@ -104,7 +104,7 @@ export default function IssueDetail() {
     return (
       <div className="min-h-screen bg-gray-50">
         <Navbar onSearch={() => {}} />
-        <PageLoading text="正在加载Issue详情..." />
+        <PageLoading text={t('issue.loadingDetails')} />
       </div>
     );
   }
@@ -120,13 +120,13 @@ export default function IssueDetail() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833.192 2.5 1.732 2.5z" />
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">加载失败</h3>
-            <p className="text-gray-600 mb-6">{error || '未找到指定的Issue'}</p>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">{t('issue.loadFailed')}</h3>
+            <p className="text-gray-600 mb-6">{error || t('issue.notFound')}</p>
             <button
               onClick={() => navigate('/')}
               className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200"
             >
-              返回首页
+              {t('issue.backToHome')}
             </button>
           </div>
         </div>
@@ -145,7 +145,7 @@ export default function IssueDetail() {
           className="flex items-center text-gray-600 hover:text-gray-900 mb-6 transition-colors duration-200"
         >
           <ArrowLeft className="w-5 h-5 mr-2" />
-          返回首页
+          {t('issue.backToHome')}
         </button>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -178,7 +178,7 @@ export default function IssueDetail() {
                   className="flex items-center bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200"
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />
-                  在GitHub查看
+                  {t('issue.viewOnGitHub')}
                 </a>
               </div>
               
@@ -256,7 +256,7 @@ export default function IssueDetail() {
                     </ReactMarkdown>
                   </div>
                 ) : (
-                  <p className="text-gray-500 italic">暂无描述</p>
+                  <p className="text-gray-500 italic">{t('issue.noDescription')}</p>
                 )}
               </div>
             </div>
@@ -264,14 +264,14 @@ export default function IssueDetail() {
             {/* AI Analysis Section */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold text-gray-900">AI 智能分析</h2>
+                <h2 className="text-xl font-bold text-gray-900">{t('issue.aiAnalysisTitle')}</h2>
                 {!aiAnalysis && (
                   <button
                     onClick={handleGenerateAnalysis}
                     disabled={isAnalyzing}
                     className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200"
                   >
-                    {isAnalyzing ? '分析中...' : '生成AI分析'}
+                    {isAnalyzing ? t('issue.analyzing') : t('issue.generateAnalysis')}
                   </button>
                 )}
               </div>
@@ -288,22 +288,22 @@ export default function IssueDetail() {
           <div className="lg:col-span-1">
             {/* Issue Stats */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Issue 信息</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('issue.issueInfo')}</h3>
               
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600">状态</span>
+                  <span className="text-gray-600">{t('issue.status')}</span>
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                     issue.state === 'open' 
                       ? 'bg-green-100 text-green-800' 
                       : 'bg-red-100 text-red-800'
                   }`}>
-                    {issue.state === 'open' ? '开放' : '已关闭'}
+                    {issue.state === 'open' ? t('issue.open') : t('issue.closed')}
                   </span>
                 </div>
                 
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600">难度</span>
+                  <span className="text-gray-600">{t('issue.difficulty')}</span>
                   <span 
                     className="px-2 py-1 rounded-full text-xs font-medium"
                     style={{
@@ -317,7 +317,7 @@ export default function IssueDetail() {
                 
                 {issue.score && (
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-600">推荐分数</span>
+                    <span className="text-gray-600">{t('issue.score')}</span>
                     <span className="font-semibold text-blue-600">
                       {issue.score.toFixed(1)}/10
                     </span>
@@ -325,17 +325,17 @@ export default function IssueDetail() {
                 )}
                 
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600">评论数</span>
+                  <span className="text-gray-600">{t('issue.commentsCount')}</span>
                   <span className="font-medium">{issue.comments}</span>
                 </div>
                 
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600">创建时间</span>
+                  <span className="text-gray-600">{t('issue.createdTime')}</span>
                   <span className="text-sm">{formatAbsoluteTime(issue.created_at, language)}</span>
                 </div>
                 
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600">更新时间</span>
+                  <span className="text-gray-600">{t('issue.updatedTime')}</span>
                   <span className="text-sm flex items-center">
                     <Clock className="w-4 h-4 mr-1" />
                     {formatRelativeTime(issue.updated_at, language)}
@@ -346,7 +346,7 @@ export default function IssueDetail() {
             
             {/* Quick Actions */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">快速操作</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('issue.quickActions')}</h3>
               
               <div className="space-y-3">
                 <a
@@ -356,7 +356,7 @@ export default function IssueDetail() {
                   className="w-full flex items-center justify-center bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200"
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />
-                  在GitHub查看
+                  {t('issue.viewOnGitHub')}
                 </a>
                 
                 <a
@@ -365,7 +365,7 @@ export default function IssueDetail() {
                   rel="noopener noreferrer"
                   className="w-full flex items-center justify-center border border-gray-300 hover:border-gray-400 text-gray-700 px-4 py-2 rounded-lg font-medium transition-colors duration-200"
                 >
-                  查看更多Issues
+                  {t('issue.viewMoreIssues')}
                 </a>
                 
                 <a
@@ -374,7 +374,7 @@ export default function IssueDetail() {
                   rel="noopener noreferrer"
                   className="w-full flex items-center justify-center border border-gray-300 hover:border-gray-400 text-gray-700 px-4 py-2 rounded-lg font-medium transition-colors duration-200"
                 >
-                  访问仓库
+                  {t('issue.visitRepository')}
                 </a>
               </div>
             </div>

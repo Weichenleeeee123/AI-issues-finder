@@ -85,7 +85,7 @@ export default function Navbar({ onSearch }: NavbarProps) {
           <div className="hidden md:flex items-center space-x-4">
             <LanguageSwitcher />
             <a
-              href="https://github.com"
+              href="https://github.com/Weichenleeeee123/AI-issues-finder"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors"
