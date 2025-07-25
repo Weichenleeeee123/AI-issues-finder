@@ -24,7 +24,7 @@ class GitHubApiService {
       
       // 构建搜索查询 - 扩展搜索范围
       if (params.query) {
-        // 搜索标题、内容、标签、repo名等多个字段
+        // 搜索标题、内容、标签等字段
         const searchTerms = [];
         const query = params.query.trim();
         
@@ -32,12 +32,10 @@ class GitHubApiService {
         searchTerms.push(`${query} in:title`);
         // 在内容中搜索
         searchTerms.push(`${query} in:body`);
-        // 在标签中搜索
-        searchTerms.push(`label:${query}`);
-        // 在repo名中搜索
-        searchTerms.push(`repo:*${query}*`);
-        // 在主题/话题中搜索
-        searchTerms.push(`topic:${query}`);
+        // 在标签中搜索（如果查询词不包含空格）
+        if (!query.includes(' ')) {
+          searchTerms.push(`label:${query}`);
+        }
         
         // 使用OR连接多个搜索条件
         queryParts.push(`(${searchTerms.join(' OR ')})`);
@@ -115,24 +113,29 @@ class GitHubApiService {
   // 获取热门仓库的 issues
   async getPopularIssues(count: number = 30): Promise<GitHubIssue[]> {
     try {
-      // 使用通用搜索获取好的第一个issue，限制仓库star数大于1000
+      // 使用简化的查询格式获取good first issue
       const result = await this.searchIssues({
-        query: 'good first issue stars:>1000',
+        query: 'good first issue',
         sort: 'updated',
         order: 'desc'
       });
       
-      // 确保所有issues都有合理的star数量
-      const validIssues = result.data.filter(issue => 
-        issue.repository && issue.repository.stargazers_count >= 1000
-      );
-      
-      if (validIssues.length > 0) {
-        return validIssues.slice(0, count);
+      if (result.data && result.data.length > 0) {
+        return result.data.slice(0, count);
       } else {
-        // 如果没有有效的issues，返回模拟数据
-        console.warn('No valid issues found, using mock data');
-        return this.getMockIssues(count);
+        // 如果没有找到issues，尝试更通用的查询
+        const fallbackResult = await this.searchIssues({
+          query: 'help wanted',
+          sort: 'updated',
+          order: 'desc'
+        });
+        
+        if (fallbackResult.data && fallbackResult.data.length > 0) {
+          return fallbackResult.data.slice(0, count);
+        } else {
+          console.warn('No real issues found, using mock data as last resort');
+          return this.getMockIssues(count);
+        }
       }
     } catch (error) {
       console.error('Error fetching popular issues:', error);
@@ -145,14 +148,29 @@ class GitHubApiService {
   async getMorePopularIssues(page: number = 2, count: number = 30): Promise<GitHubIssue[]> {
     try {
       const result = await this.searchIssues({
-        query: 'good first issue stars:>1000',
+        query: 'good first issue',
         sort: 'updated',
         order: 'desc'
       });
       
-      // 由于搜索查询已经包含stars:>1000，直接返回结果
-      const startIndex = (page - 1) * count;
-      return result.data.slice(startIndex, startIndex + count);
+      if (result.data && result.data.length > 0) {
+        const startIndex = (page - 1) * count;
+        return result.data.slice(startIndex, startIndex + count);
+      } else {
+        // 如果没有找到issues，尝试更通用的查询
+        const fallbackResult = await this.searchIssues({
+          query: 'help wanted',
+          sort: 'updated',
+          order: 'desc'
+        });
+        
+        if (fallbackResult.data && fallbackResult.data.length > 0) {
+          const startIndex = (page - 1) * count;
+          return fallbackResult.data.slice(startIndex, startIndex + count);
+        }
+      }
+      
+      return [];
     } catch (error) {
       console.error('Error fetching more popular issues:', error);
       return [];
