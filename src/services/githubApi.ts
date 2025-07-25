@@ -22,23 +22,29 @@ class GitHubApiService {
     try {
       const queryParts = [];
       
-      // 构建搜索查询 - 扩展搜索范围
+      // 构建搜索查询
       if (params.query) {
-        // 搜索标题、内容、标签等字段
-        const searchTerms = [];
         const query = params.query.trim();
         
-        // 在标题中搜索
-        searchTerms.push(`${query} in:title`);
-        // 在内容中搜索
-        searchTerms.push(`${query} in:body`);
-        // 在标签中搜索（如果查询词不包含空格）
-        if (!query.includes(' ')) {
-          searchTerms.push(`label:${query}`);
+        // 对于特殊查询（如 'good first issue'），直接使用
+        if (query === 'good first issue' || query === 'help wanted') {
+          queryParts.push(query);
+        } else {
+          // 对于用户搜索，使用扩展搜索范围
+          const searchTerms = [];
+          
+          // 在标题中搜索
+          searchTerms.push(`${query} in:title`);
+          // 在内容中搜索
+          searchTerms.push(`${query} in:body`);
+          // 在标签中搜索（如果查询词不包含空格）
+          if (!query.includes(' ')) {
+            searchTerms.push(`label:${query}`);
+          }
+          
+          // 使用OR连接多个搜索条件
+          queryParts.push(`(${searchTerms.join(' OR ')})`);
         }
-        
-        // 使用OR连接多个搜索条件
-        queryParts.push(`(${searchTerms.join(' OR ')})`);
       }
       
       if (params.repository) {
