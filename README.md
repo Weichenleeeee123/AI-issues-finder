@@ -4,6 +4,12 @@
 
 **中文** | [English](README_EN.md)
 
+## 🌐 在线体验
+
+[![Deploy with Vercel](https://vercel.com/button)](https://traenn4e001z-evy47wwf0-weichens-projects-083f7446.vercel.app)
+
+**🔗 在线访问**: [https://traenn4e001z-evy47wwf0-weichens-projects-083f7446.vercel.app](https://traenn4e001z-evy47wwf0-weichens-projects-083f7446.vercel.app)
+
 ---
 
 AI Issues Finder 是一个智能平台，通过分析和推荐来自热门仓库的高质量GitHub issues，帮助开发者发现适合的开源贡献机会。

@@ -4,6 +4,12 @@
 
 [中文版](README.md) | **English**
 
+## 🌐 Live Demo
+
+[![Deploy with Vercel](https://vercel.com/button)](https://traenn4e001z-evy47wwf0-weichens-projects-083f7446.vercel.app)
+
+**🔗 Live Site**: [https://traenn4e001z-evy47wwf0-weichens-projects-083f7446.vercel.app](https://traenn4e001z-evy47wwf0-weichens-projects-083f7446.vercel.app)
+
 ---
 
 AI Issues Finder is an intelligent platform that helps developers discover suitable open-source contribution opportunities by analyzing and recommending high-quality GitHub issues from popular repositories.
