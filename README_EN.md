@@ -116,9 +116,9 @@ If this project helps you, please give us a ⭐️!
 
 ## 📞 Contact Us
 
-- 📧 Email: your-email@example.com
-- 🐛 Issues: [GitHub Issues](https://github.com/yourusername/AI-issues-finder/issues)
-- 💬 Discussions: [GitHub Discussions](https://github.com/yourusername/AI-issues-finder/discussions)
+- 📧 Email: weichenleeeee@outlook.com
+- 🐛 Issues: [GitHub Issues](https://github.com/weichenleeeee123/AI-issues-finder/issues)
+- 💬 Discussions: [GitHub Discussions](https://github.com/weichenleeeee123/AI-issues-finder/discussions)
 
 ---
 

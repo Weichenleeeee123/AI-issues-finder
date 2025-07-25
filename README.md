@@ -116,9 +116,9 @@ src/
 
 ## 📞 联系我们
 
-- 📧 邮箱: your-email@example.com
-- 🐛 问题反馈: [GitHub Issues](https://github.com/yourusername/AI-issues-finder/issues)
-- 💬 讨论交流: [GitHub Discussions](https://github.com/yourusername/AI-issues-finder/discussions)
+- 📧 邮箱: weichenleeeee@outlook.com
+- 🐛 问题反馈: [GitHub Issues](https://github.com/weichenleeeee123/AI-issues-finder/issues)
+- 💬 讨论交流: [GitHub Discussions](https://github.com/weichenleeeee123/AI-issues-finder/discussions)
 
 ---
 
